@@ -1,5 +1,6 @@
 package com.actividad1.demo.datosPrueba;
 
+import com.actividad1.demo.model.Post;
 import com.actividad1.demo.model.Usuario;
 
 import java.util.ArrayList;
@@ -11,10 +12,11 @@ public class DatosPrueba {
 
     List<Usuario> usuarios = new ArrayList<>();
 
-    public DatosPrueba() {
-        usuarios.add(usuarioPatata);
-        usuarios.add(usuarioLechuga);
-    }
+    Post postLechuga1 = new Post(1, "Este es el primer post de Lechuga", usuarioLechuga);
+    Post postPatata1 = new Post(2, "Este es el primer y único post de Patata", usuarioPatata);
+    Post getPostLechuga2 = new Post(3, "Este es el segundo post de Lechuga", usuarioLechuga);
+
+    List<Post> posts = new ArrayList<>();
 
     public void addUsuario(Usuario usuario) {
         usuarios.add(usuario);

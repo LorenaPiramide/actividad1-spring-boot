@@ -1,6 +1,5 @@
 package com.actividad1.demo.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
