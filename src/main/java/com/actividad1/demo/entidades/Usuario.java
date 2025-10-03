@@ -1,18 +1,12 @@
-package com.actividad1.demo.model;
+package com.actividad1.demo.entidades;
 
 public class Usuario {
-    private int id;
-    private String nombreUsuario;
-    private String password;
+    private final String nombreUsuario;
+    private final String password;
 
-    public Usuario(int id, String nombreUsuario, String password) {
-        this.id = id;
+    public Usuario(String nombreUsuario, String password) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getNombreUsuario() {
@@ -26,9 +20,5 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario: " + nombreUsuario;
-    }
-
-    public void addUsuarios() {
-
     }
 }

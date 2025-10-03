@@ -1,37 +1,43 @@
 package com.actividad1.demo.controller;
 
-import com.actividad1.demo.model.Usuario;
+import com.actividad1.demo.dao.DAOFactory;
+import com.actividad1.demo.entidades.Usuario;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class UsuarioController {
 
-    Usuario usuarioPatata = new Usuario(1, "Patata123", "patatapass");
-    Usuario usuarioLechuga = new Usuario(1, "Lechuga987", "lechugapass");
-
-    List<Usuario> usuarios = new ArrayList<>();
-
-    public UsuarioController() {
-        usuarios.add(usuarioPatata);
-        usuarios.add(usuarioLechuga);
-    }
-
     @RequestMapping("/login")
     String login() {
-        return "login.html";
+        return "login";
     }
 
-    @RequestMapping("/nuevo_usuario")
+    @GetMapping("/nuevo_usuario")
     String nuevoUsuario() {
-        return "nuevo_usuario.html";
+        return "nuevo_usuario";
+    }
+
+    @PostMapping("/usuarios/registro")
+    String guardaUsuario(Usuario usuario) {
+        DAOFactory.getInstance().getDaoUsuario().guardaUsuario(usuario);
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping("/usuarios")
+    String getUsuarios() {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        List<Usuario> usuarios = daoFactory.getDaoUsuario().getUsuarios();
+        System.out.println(usuarios);
+        return "usuarios";
     }
 
     @RequestMapping("/perfil_usuario")
     String perfilUsuario() {
-        return "perfil_usuario.html";
+        return "perfil_usuario";
     }
 }

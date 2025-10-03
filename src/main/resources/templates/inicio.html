@@ -5,6 +5,7 @@
     <title>Inicio</title>
 </head>
 <body>
+    <div th:replace="/fragments/nav"></div>
     <div th:each="post : ${posts}">
         <p th:text="${post.texto}"><br></p>
         <p th:text="${post.usuario}"></p>

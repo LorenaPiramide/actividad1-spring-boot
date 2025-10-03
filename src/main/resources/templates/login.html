@@ -8,8 +8,8 @@
     <form method="post">
         <input name="user" type="text" placeholder="Nombre de usuario"/>
         <input name="password" type="text" placeholder="Contraseña">
-        <button>Acceder</button>
-        <a th:href="@{/nuevo_usuario.html}">Crear cuenta</a>
+        <button th:ref="@{/inicio}">Acceder</button>
+        <a th:href="@{/nuevo_usuario}">Crear cuenta</a>
     </form>
 </body>
 </html>
