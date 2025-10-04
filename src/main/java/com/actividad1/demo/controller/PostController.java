@@ -5,6 +5,5 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class PostController {
 
-    public PostController(UsuarioController usuarioController) {
-    }
+
 }

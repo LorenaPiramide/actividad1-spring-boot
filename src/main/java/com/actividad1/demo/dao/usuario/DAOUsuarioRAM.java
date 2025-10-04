@@ -22,4 +22,24 @@ public class DAOUsuarioRAM implements DAOUsuario {
     public void guardaUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
     }
+
+    @Override
+    public Usuario buscarPorNombre(String nombreUsuario) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean comprobarLogin(String nombreUsuario, String password) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

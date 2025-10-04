@@ -8,5 +8,7 @@ public interface DAOUsuario {
 
     public List<Usuario> getUsuarios();
     public void guardaUsuario(Usuario usuario);
+    public boolean comprobarLogin(String nombreUsuario, String password);
+    public Usuario buscarPorNombre(String nombreUsuario);
 
 }
