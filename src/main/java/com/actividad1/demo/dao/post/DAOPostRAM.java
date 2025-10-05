@@ -1,37 +1,67 @@
 package com.actividad1.demo.dao.post;
 
+import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAOPostRAM implements DAOPost {
-
-    public List<Usuario> usuariosLikes;
+    private int idIndex = 0;
     public List<Usuario> usuariosReposts;
+    public List<Post> posts;
 
     public DAOPostRAM() {
-        this.usuariosLikes = new ArrayList<>();
         this.usuariosReposts = new ArrayList<>();
+        this.posts = new ArrayList<>();
+    }
+
+//    @Override
+//    public List<Usuario> getLikes() {
+//        return this.usuariosLikes;
+//    }
+//
+//    @Override
+//    public List<Usuario> getRepost() {
+//        return this.usuariosReposts;
+//    }
+
+    @Override
+    public void addPost(Post post) {
+        post.setId(idIndex);
+        idIndex++;
+        this.posts.add(post);
     }
 
     @Override
-    public List<Usuario> getLikes() {
-        return this.usuariosLikes;
+    public void repost(Post post, Usuario usuario) {
+        post.setRepost(post.getId());
+
+        post.setUsuario(usuario);
+
+        this.addPost(post);
     }
 
     @Override
-    public List<Usuario> getRepost() {
-        return this.usuariosReposts;
+    public void showPosts() {
+
     }
 
     @Override
-    public int mostrarNumeroLikes(List<Usuario> usuariosLikes) {
-        return usuariosLikes.size();
+    public void showUserPosts(Usuario usuario) {
+
     }
 
     @Override
-    public int mostrarNumeroReposts(List<Usuario> usuariosReposts) {
-        return usuariosReposts.size();
+    public int getRepostNumber(Post post) {
+        int mostrarNumeroReposts = 0;
+        for (int i = 0; i < this.posts.size(); i++) {
+            if (this.posts.get(i).getRepost() == post.getId()) {
+                mostrarNumeroReposts++;
+            }
+        }
+        return mostrarNumeroReposts;
     }
 }
