@@ -1,7 +1,7 @@
 package com.actividad1.demo.entidades;
 
 public class Post {
-    private final String texto;;
+    private String texto;;
     private int id = -1;
     private Usuario usuario;
     private int repost = -1;
@@ -15,6 +15,9 @@ public class Post {
     public Post(String texto, Usuario usuario) {
         this.texto = texto;
         this.usuario = usuario;
+    }
+
+    public Post() {
     }
 
     public int getId() {
@@ -31,6 +34,10 @@ public class Post {
 
     public int getRepost() {
         return repost;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public void setId(int id) {

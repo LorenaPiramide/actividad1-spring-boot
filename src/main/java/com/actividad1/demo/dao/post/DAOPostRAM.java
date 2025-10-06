@@ -4,9 +4,7 @@ import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DAOPostRAM implements DAOPost {
     private int idIndex = 0;
@@ -17,16 +15,6 @@ public class DAOPostRAM implements DAOPost {
         this.usuariosReposts = new ArrayList<>();
         this.posts = new ArrayList<>();
     }
-
-//    @Override
-//    public List<Usuario> getLikes() {
-//        return this.usuariosLikes;
-//    }
-//
-//    @Override
-//    public List<Usuario> getRepost() {
-//        return this.usuariosReposts;
-//    }
 
     @Override
     public void addPost(Post post) {

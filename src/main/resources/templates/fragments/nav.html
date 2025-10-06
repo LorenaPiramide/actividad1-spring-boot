@@ -5,9 +5,12 @@
 </head>
 <body>
     <nav>
-        <a th:href="@{/inicio.html}">Inicio</a>
-        <a th:href="@{/perfil_usuario.html}">Mi perfil</a>
-        <button th:href="@{/crear_post}">Crear post</button>
+        <a th:href="@{/inicio}">Inicio</a>
+        <a th:href="@{/perfil_usuario}">Mi perfil</a>
+        <a>Buscar por nombre</a>
+        <a>Buscar por contenido</a>
+        <a>Buscar por fecha</a>
+        <a th:href="@{/crear_post(nombreUsuario=${usuario.nombreUsuario})}">Crear post</a>
     </nav>
 </body>
 </html>

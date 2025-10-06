@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Crear post</title>
 </head>
 <body>
-    <form action="perfil_usuario.html" method="post">
-
+    <form action="/post/crear" method="post">
+        <textarea name="texto" type="text" placeholder="¿Qué quieres postear?"></textarea>
+        <input name="usuario" type="hidden" th:value="${usuario.nombreUsuario}">
+        <button>Crear post</button>
     </form>
 </body>
 </html>
