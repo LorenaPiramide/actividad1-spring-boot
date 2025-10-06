@@ -6,9 +6,10 @@ import java.util.List;
 
 public interface DAOUsuario {
 
-    public List<Usuario> getUsuarios();
-    public void guardaUsuario(Usuario usuario);
-    public boolean comprobarLogin(String nombreUsuario, String password);
-    public Usuario buscarPorNombre(String nombreUsuario);
+    List<Usuario> getUsuarios();
+    void guardaUsuario(Usuario usuario);
+    boolean comprobarLogin(String nombreUsuario, String password);
+    Usuario buscarPorNombre(String nombreUsuario);
+    boolean existeUsuario(String nombreUsuario);
 
 }

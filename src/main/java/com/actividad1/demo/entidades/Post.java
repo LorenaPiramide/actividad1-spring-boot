@@ -1,15 +1,19 @@
 package com.actividad1.demo.entidades;
 
+import java.time.LocalDateTime;
+
 public class Post {
-    private String texto;;
+    private String texto;
     private int id = -1;
     private Usuario usuario;
     private int repost = -1;
+    private LocalDateTime fecha;
 
     public Post(String texto, Usuario usuario, int repost) {
         this.texto = texto;
         this.usuario = usuario;
         this.repost = repost;
+        this.fecha = LocalDateTime.now();
     }
 
     public Post(String texto, Usuario usuario) {

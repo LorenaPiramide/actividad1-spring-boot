@@ -3,6 +3,7 @@ package com.actividad1.demo.dao.post;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +34,21 @@ public class DAOPostRAM implements DAOPost {
     }
 
     @Override
-    public void showPosts() {
-
-    }
-
-    @Override
-    public void showUserPosts(Usuario usuario) {
-
+    public List<Post> getPostPorUsuario(Usuario usuario) {
+        List<Post> postUSuario = new ArrayList<>();
+        for (Post post : this.posts) {
+            if (post.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario())) {
+                postUSuario.add(post);
+            }
+        }
+        return postUSuario;
     }
 
     @Override
     public int getRepostNumber(Post post) {
         int mostrarNumeroReposts = 0;
-        for (int i = 0; i < this.posts.size(); i++) {
-            if (this.posts.get(i).getRepost() == post.getId()) {
+        for (Post p : this.posts) {
+            if (p.getRepost() == post.getId()) {
                 mostrarNumeroReposts++;
             }
         }

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
 </head>
 <body>
+    <div th:if="${error}">
+        <p th:text="${error}">Error</p>
+    </div>
     <form action="/usuarios/registro" method="post">
         <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
         <input name="password" type="text" placeholder="Contraseña">

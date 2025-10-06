@@ -6,14 +6,9 @@ import com.actividad1.demo.entidades.Usuario;
 import java.util.List;
 
 public interface DAOPost {
-//    public List<Usuario> getLikes();
 
-    public void addPost(Post post);
-    public void repost(Post post, Usuario usuario);
-
-    public void showPosts();
-    public void showUserPosts(Usuario usuario);
-
-
-    public int getRepostNumber(Post post);
+    void addPost(Post post);
+    void repost(Post post, Usuario usuario);
+    List<Post> getPostPorUsuario(Usuario usuario);
+    int getRepostNumber(Post post);
 }

@@ -7,10 +7,20 @@
     <nav>
         <a th:href="@{/inicio}">Inicio</a>
         <a th:href="@{/perfil_usuario}">Mi perfil</a>
-        <a>Buscar por nombre</a>
-        <a>Buscar por contenido</a>
-        <a>Buscar por fecha</a>
-        <a th:href="@{/crear_post(nombreUsuario=${usuario.nombreUsuario})}">Crear post</a>
+        <form th:action="@{/crear_post}" method="get" style="display:inline;">
+            <input type="hidden" name="nombreUsuario" th:value="${usuario.nombreUsuario}" />
+            <button type="submit">Crear post</button>
+        </form>
+
     </nav>
+
+    <form>
+        <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
+        <button>Buscar por nombre</button>
+        <input name="texto" type="text" placeholder="Contenido">
+        <button>Buscar por contenido</button>
+        <input name="fecha" type="text" placeholder="Fecha">
+        <button>Buscar por fecha</button>
+    </form>
 </body>
 </html>

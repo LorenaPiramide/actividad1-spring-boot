@@ -22,7 +22,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuarios/registro")
-    String guardaUsuario(Usuario usuario) {
+    String guardaUsuario(Usuario usuario, Model model) {
+        if (DAOFactory.getInstance().getDaoUsuario().existeUsuario(usuario.getNombreUsuario())) {
+            model.addAttribute("error", "Nombre de usuario no disponible. Vuelve a intentarlo");
+            return "nuevo_usuario";
+        }
         DAOFactory.getInstance().getDaoUsuario().guardaUsuario(usuario);
         return "redirect:/login";
     }

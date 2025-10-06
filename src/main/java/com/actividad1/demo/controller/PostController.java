@@ -22,8 +22,12 @@ public class PostController {
     }
 
     @PostMapping("/post/crear")
-    String guardaPost(Post post) {
-        DAOFactory.getInstance().getDaoPost().addPost(post);
+    String guardaPost(@RequestParam String texto, @RequestParam String nombreUsuario, Model model) {
+        Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+        DAOFactory.getInstance().getDaoPost().addPost(new Post(texto, usuario));
+
+        model.addAttribute("usuario", usuario);
+
         return "perfil_usuario";
     }
 

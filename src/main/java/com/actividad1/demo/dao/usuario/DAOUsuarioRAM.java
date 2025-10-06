@@ -34,6 +34,16 @@ public class DAOUsuarioRAM implements DAOUsuario {
     }
 
     @Override
+    public boolean existeUsuario(String nombreUsuario) {
+        for (Usuario usuario : this.usuarios) {
+            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean comprobarLogin(String nombreUsuario, String password) {
         for (Usuario usuario : usuarios) {
             if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getPassword().equals(password)) {
