@@ -13,7 +13,6 @@ public class Post {
         this.texto = texto;
         this.usuario = usuario;
         this.repost = repost;
-        this.fecha = LocalDateTime.now();
     }
 
     public Post(String texto, Usuario usuario) {
@@ -40,6 +39,10 @@ public class Post {
         return repost;
     }
 
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
     public void setTexto(String texto) {
         this.texto = texto;
     }
@@ -56,8 +59,12 @@ public class Post {
         this.repost = repost;
     }
 
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
     @Override
     public String toString() {
-        return "\nTexto: " + texto + "\nUsuario: " + usuario;
+        return "\nTexto: " + texto + " " + usuario;
     }
 }

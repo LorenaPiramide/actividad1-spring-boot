@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Controller
 public class PostController {
 
     @GetMapping("/crear_post")
-    // Por el RequestParam necesitamos luego poner @{/crear_post(nombreUsuario=${usuario.nombreUsuario})}
-    // le pasamos al mét0do la variable nombreUsuario para que la pueda leer con thymeleaf
     String crearPost(@RequestParam String nombreUsuario, Model model) {
         Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
         model.addAttribute("usuario", usuario);
@@ -24,11 +25,20 @@ public class PostController {
     @PostMapping("/post/crear")
     String guardaPost(@RequestParam String texto, @RequestParam String nombreUsuario, Model model) {
         Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
-        DAOFactory.getInstance().getDaoPost().addPost(new Post(texto, usuario));
+        Post post = new Post(texto, usuario);
+        post.setFecha(LocalDateTime.now());
+        DAOFactory.getInstance().getDaoPost().addPost(post);
 
         model.addAttribute("usuario", usuario);
 
         return "perfil_usuario";
     }
 
+    @GetMapping("/inicio")
+    String getPosts(Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
+
+        model.addAttribute("posts", posts);
+        return "inicio";
+    }
 }

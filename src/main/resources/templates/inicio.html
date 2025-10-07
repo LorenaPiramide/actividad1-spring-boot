@@ -8,7 +8,8 @@
     <div th:replace="/fragments/nav"></div>
     <div th:each="post : ${posts}">
         <p th:text="${post.texto}"><br></p>
-        <p th:text="${post.usuario}"></p>
+        <p th:text="${usuario.nombreUsuario}"></p>
+        <p th:text="${post.fecha}"></p>
         <button>Repostear</button>
         <button>Me gusta</button>
     </div>

@@ -1,12 +1,15 @@
 package com.actividad1.demo.controller;
 
 import com.actividad1.demo.dao.DAOFactory;
+import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 public class UsuarioController {
@@ -51,13 +54,15 @@ public class UsuarioController {
 
             return "perfil_usuario";
         } else {
-            System.out.println("Error");
             return "login";
         }
     }
 
     @RequestMapping("/perfil_usuario")
-    String perfilUsuario() {
+    String perfilUsuario(Usuario usuario, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuario);
+
+        model.addAttribute("posts", posts);
         return "perfil_usuario";
     }
 
