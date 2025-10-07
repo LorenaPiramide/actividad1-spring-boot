@@ -35,10 +35,16 @@ public class PostController {
     }
 
     @GetMapping("/inicio")
-    String getPosts(Model model) {
+    String getPosts(@RequestParam(required = false) String nombreUsuario, Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
-
         model.addAttribute("posts", posts);
+
+        if (nombreUsuario != null) {
+            Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+            if (usuario != null) {
+                model.addAttribute("usuario", usuario);
+            }
+        }
         return "inicio";
     }
 }

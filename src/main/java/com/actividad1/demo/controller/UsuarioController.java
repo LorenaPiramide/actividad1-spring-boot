@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -45,23 +46,36 @@ public class UsuarioController {
 
     @PostMapping("/login")
     String loginUsuario(Usuario usuario, Model model) {
-        boolean valido = DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword());
-
-        if (valido) {
-            Usuario usuarioGuardado = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(usuario.getNombreUsuario());
-
-            model.addAttribute("usuario", usuarioGuardado);
-
-            return "perfil_usuario";
-        } else {
-            return "login";
+//        boolean valido = DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword());
+//
+//        if (valido) {
+//            Usuario usuarioGuardado = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(usuario.getNombreUsuario());
+//
+//            model.addAttribute("usuario", usuarioGuardado);
+//
+//            return "perfil_usuario";
+//        } else {
+//            return "login";
+//        }
+        if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword())) {
+            return "redirect:/inicio?nombreUsuario=" + usuario.getNombreUsuario();
         }
+        return "login";
     }
 
-    @RequestMapping("/perfil_usuario")
-    String perfilUsuario(Usuario usuario, Model model) {
-        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuario);
+    @GetMapping("/logout")
+    String logout(){
+        return "redirect:/login";
+    }
 
+    @RequestMapping("/perfil")
+    String verPerfil(@RequestParam String nombreUsuario, Model model) {
+        Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+        if (usuario == null) {
+            return "login";
+        }
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuario);
+        model.addAttribute("usuario", usuario);
         model.addAttribute("posts", posts);
         return "perfil_usuario";
     }
