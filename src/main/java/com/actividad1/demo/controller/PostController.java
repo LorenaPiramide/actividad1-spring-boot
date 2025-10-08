@@ -15,6 +15,7 @@ import java.util.List;
 @Controller
 public class PostController {
 
+    // Get → Recibir datos. No se puede pasar un body
     @GetMapping("/crear_post")
     String crearPost(@RequestParam String nombreUsuario, Model model) {
         Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
@@ -22,6 +23,7 @@ public class PostController {
         return "crear_post";
     }
 
+    // Post → Creación de datos, formularios, etc. Se le puede pasar un body
     @PostMapping("/post/crear")
     String guardaPost(@RequestParam String texto, @RequestParam String nombreUsuario, Model model) {
         Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
@@ -46,5 +48,51 @@ public class PostController {
             }
         }
         return "inicio";
+    }
+
+    @PostMapping("/repost")
+    String repostear(@RequestParam int postId, @RequestParam String nombreUsuario) {
+        Post postOriginal = null;
+
+        for (Post post : DAOFactory.getInstance().getDaoPost().getPosts()) {
+            if (post.getId() == postId) {
+                postOriginal = post;
+                break;
+            }
+        }
+
+        if (postOriginal == null) {
+            return "redirect:/inicio?nombreUsuario" + nombreUsuario;
+        }
+
+        Usuario usuarioRepost = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+
+        DAOFactory.getInstance().getDaoPost().repost(postOriginal, usuarioRepost);
+
+        return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
+    }
+
+    @PostMapping("/like")
+    String darLike(@RequestParam String nombreUsuario, @RequestParam int postId) {
+        Post post = null;
+        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
+            if (p.getId() == postId) {
+                post = p;
+                break;
+            }
+        }
+
+        if (post == null) {
+            return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
+        }
+
+        Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        post.addLike(nombreUsuario);
+
+        return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
     }
 }

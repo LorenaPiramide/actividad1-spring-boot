@@ -3,6 +3,7 @@ package com.actividad1.demo.dao.post;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +25,12 @@ public class DAOPostRAM implements DAOPost {
     }
 
     @Override
-    public void repost(Post post, Usuario usuario) {
-        post.setRepost(post.getId());
+    public void repost(Post postOriginal, Usuario usuarioRepost) {
+        Post repost = new Post(postOriginal.getTexto(), usuarioRepost, postOriginal.getId());
 
-        post.setUsuario(usuario);
+        repost.setFecha(LocalDateTime.now());
 
-        this.addPost(post);
+        this.addPost(repost);
     }
 
     @Override

@@ -46,17 +46,6 @@ public class UsuarioController {
 
     @PostMapping("/login")
     String loginUsuario(Usuario usuario, Model model) {
-//        boolean valido = DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword());
-//
-//        if (valido) {
-//            Usuario usuarioGuardado = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(usuario.getNombreUsuario());
-//
-//            model.addAttribute("usuario", usuarioGuardado);
-//
-//            return "perfil_usuario";
-//        } else {
-//            return "login";
-//        }
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword())) {
             return "redirect:/inicio?nombreUsuario=" + usuario.getNombreUsuario();
         }

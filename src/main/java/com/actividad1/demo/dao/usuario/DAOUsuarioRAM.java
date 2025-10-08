@@ -10,7 +10,11 @@ public class DAOUsuarioRAM implements DAOUsuario {
     public List<Usuario> usuarios;
 
     public DAOUsuarioRAM() {
+        Usuario usuario = new Usuario("a", "12");
+        Usuario usuario1 = new Usuario("b", "12");
         this.usuarios = new ArrayList<>();
+        this.usuarios.add(usuario);
+        this.usuarios.add(usuario1);
     }
 
     @Override

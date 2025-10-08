@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -7,7 +7,7 @@
 <body>
     <form method="post">
         <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
-        <input name="password" type="text" placeholder="Contraseña">
+        <input name="password" type="password" placeholder="Contraseña">
         <button th:ref="@{/inicio}">Acceder</button>
         <a th:href="@{/nuevo_usuario}">Crear cuenta</a>
     </form>

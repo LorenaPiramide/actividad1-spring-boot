@@ -1,6 +1,8 @@
 package com.actividad1.demo.entidades;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
     private String texto;
@@ -8,19 +10,23 @@ public class Post {
     private Usuario usuario;
     private int repost = -1;
     private LocalDateTime fecha;
+    private List<String> usuariosLike;
 
     public Post(String texto, Usuario usuario, int repost) {
         this.texto = texto;
         this.usuario = usuario;
         this.repost = repost;
+        this.usuariosLike = new ArrayList<>();
     }
 
     public Post(String texto, Usuario usuario) {
         this.texto = texto;
         this.usuario = usuario;
+        this.usuariosLike = new ArrayList<>();
     }
 
     public Post() {
+        this.usuariosLike = new ArrayList<>();
     }
 
     public int getId() {
@@ -43,6 +49,10 @@ public class Post {
         return fecha;
     }
 
+    public List<String> getUsuariosLike() {
+        return usuariosLike;
+    }
+
     public void setTexto(String texto) {
         this.texto = texto;
     }
@@ -61,6 +71,28 @@ public class Post {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
+    }
+
+    public void setUsuariosLike(List<String> usuariosLike) {
+        this.usuariosLike = usuariosLike;
+    }
+
+    public boolean dioLike(String nombreUsuario) {
+        return usuariosLike.contains(nombreUsuario);
+    }
+
+    public void addLike(String nombreUsuario) {
+        if (!dioLike(nombreUsuario)) {
+            usuariosLike.add(nombreUsuario);
+        }
+    }
+
+    public void quitarLike(String nombreUsuario) {
+        usuariosLike.remove(nombreUsuario);
+    }
+
+    public int getNumeroLikes() {
+        return usuariosLike.size();
     }
 
     @Override
