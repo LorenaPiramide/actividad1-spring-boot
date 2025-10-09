@@ -26,7 +26,7 @@ public class DAOPostRAM implements DAOPost {
 
     @Override
     public void repost(Post postOriginal, Usuario usuarioRepost) {
-        Post repost = new Post(postOriginal.getTexto(), usuarioRepost, postOriginal.getId());
+        Post repost = new Post(postOriginal.getTexto(), usuarioRepost, true);
 
         repost.setFecha(LocalDateTime.now());
 
@@ -48,7 +48,7 @@ public class DAOPostRAM implements DAOPost {
     public int getNumeroReposts(Post post) {
         int mostrarNumeroReposts = 0;
         for (Post p : this.posts) {
-            if (p.getRepost() == post.getId()) {
+            if (p.getRepost()) {
                 mostrarNumeroReposts++;
             }
         }

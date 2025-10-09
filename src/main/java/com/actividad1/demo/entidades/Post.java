@@ -8,11 +8,11 @@ public class Post {
     private String texto;
     private int id = -1;
     private Usuario usuario;
-    private int repost = -1;
+    private boolean repost = false;
     private LocalDateTime fecha;
     private List<String> usuariosLike;
 
-    public Post(String texto, Usuario usuario, int repost) {
+    public Post(String texto, Usuario usuario, boolean repost) {
         this.texto = texto;
         this.usuario = usuario;
         this.repost = repost;
@@ -41,7 +41,7 @@ public class Post {
         return usuario;
     }
 
-    public int getRepost() {
+    public boolean getRepost() {
         return repost;
     }
 
@@ -65,7 +65,7 @@ public class Post {
         this.usuario = usuario;
     }
 
-    public void setRepost(int repost) {
+    public void setRepost(boolean repost) {
         this.repost = repost;
     }
 
