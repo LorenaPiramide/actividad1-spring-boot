@@ -7,7 +7,7 @@
 <body>
     <form action="/post/crear" method="post">
         <textarea name="texto" type="text" placeholder="¿Qué quieres postear?"></textarea>
-        <input name="nombreUsuario" type="hidden" th:value="${usuario.nombreUsuario}">
+        <input name="nombreUsuario" type="hidden" th:value="${usuarioActual.nombreUsuario}">
         <button>Crear post</button>
     </form>
 </body>

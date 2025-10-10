@@ -11,5 +11,6 @@ public interface DAOUsuario {
     boolean comprobarLogin(String nombreUsuario, String password);
     Usuario buscarPorNombre(String nombreUsuario);
     boolean existeUsuario(String nombreUsuario);
+    Usuario getUsuarioActual();
 
 }

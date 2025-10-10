@@ -14,7 +14,7 @@ public interface DAOPost {
     List<Post> getPosts();
     List<Post> ordenarAscendente();
     List<Post> ordenarDescendente();
-    List<Post> buscarPorUsuario(String usuario);
-    //List<Post> buscarPorContenido(String contenido);
-    //List<Post> buscarPorFecha(String fecha);
+    List<Post> filtrarPorUsuario(String usuario);
+    List<Post> filtrarPorContenido(String contenido);
+    List<Post> filtrarPorFecha(String fecha);
 }

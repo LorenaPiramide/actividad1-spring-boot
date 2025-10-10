@@ -7,6 +7,7 @@ import java.util.List;
 
 public class DAOUsuarioRAM implements DAOUsuario {
 
+    public Usuario usuarioActual;
     public List<Usuario> usuarios;
 
     public DAOUsuarioRAM() {
@@ -48,9 +49,15 @@ public class DAOUsuarioRAM implements DAOUsuario {
     }
 
     @Override
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    @Override
     public boolean comprobarLogin(String nombreUsuario, String password) {
         for (Usuario usuario : usuarios) {
             if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getPassword().equals(password)) {
+                usuarioActual = usuario;
                 return true;
             }
         }

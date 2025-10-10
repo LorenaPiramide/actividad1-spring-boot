@@ -5,10 +5,10 @@
 </head>
 <body>
     <nav>
-        <a th:href="@{/inicio(nombreUsuario=${usuario?.nombreUsuario})}">Inicio</a>
-        <a th:href="@{/perfil(nombreUsuario=${usuario.nombreUsuario})}">Mi perfil</a>
+        <a th:href="@{/inicio(usuarioActual.nombreUsuario)}">Inicio</a>
+        <a th:href="@{/perfil(usuarioActual.nombreUsuario)}">Mi perfil</a>
         <form th:action="@{/crear_post}" method="get" style="display:inline;">
-            <input type="hidden" name="nombreUsuario" th:value="${usuario.nombreUsuario}" />
+            <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}" />
             <button type="submit">Crear post</button>
         </form>
         <form th:action="@{/logout}" method="get">

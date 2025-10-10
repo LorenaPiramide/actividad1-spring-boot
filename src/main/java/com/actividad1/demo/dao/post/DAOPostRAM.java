@@ -1,16 +1,18 @@
 package com.actividad1.demo.dao.post;
 
-import com.actividad1.demo.dao.DAOFactory;
+
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DAOPostRAM implements DAOPost {
     private int idIndex = 0;
     public List<Usuario> usuariosReposts;
-    public List<Post> postsFiltrados;
+    //public List<Post> postsFiltrados;
     public List<Post> posts;
 
     public DAOPostRAM() {
@@ -74,11 +76,41 @@ public class DAOPostRAM implements DAOPost {
     }
 
     @Override
-    public List<Post> buscarPorUsuario(String usuario) {
-        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
-            if (p.getUsuario().getNombreUsuario().equals(usuario)) {
-                postsFiltrados.add(p);
+    public List<Post> filtrarPorUsuario(String usuario) {
+        List<Post> postsFiltrados = new ArrayList<>();
+        for (Post post : this.posts) {
+            if (post.getUsuario().getNombreUsuario().equals(usuario)) {
+                postsFiltrados.add(post);
             }
+        }
+        return postsFiltrados;
+    }
+
+    @Override
+    public List<Post> filtrarPorContenido(String texto) {
+        List<Post> postsFiltrados = new ArrayList<>();
+        for (Post post : this.posts) {
+            if (post.getTexto() != null && post.getTexto().toLowerCase().contains(texto.toLowerCase())) {
+                postsFiltrados.add(post);
+            }
+        }
+        return postsFiltrados;
+    }
+
+    @Override
+    public List<Post> filtrarPorFecha(String fechaString) {
+        List<Post> postsFiltrados = new ArrayList<>();
+        try {
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaBuscada = LocalDate.parse(fechaString);
+
+            for (Post post : this.posts) {
+                if (post.getFecha().toLocalDate().equals(fechaBuscada)) {
+                    postsFiltrados.add(post);
+                }
+            }
+        } catch (Exception e) {
+            return postsFiltrados;
         }
         return postsFiltrados;
     }

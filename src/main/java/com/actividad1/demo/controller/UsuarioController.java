@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -45,7 +46,7 @@ public class UsuarioController {
 //    }
 
     @PostMapping("/login")
-    String loginUsuario(Usuario usuario, Model model) {
+    String loginUsuario(Usuario usuario) {
         // todo, arreglar esto, que es lo que peta, si no pongo el ?nombre=" + usuario.getNombreUsuario(); Lo demás, aunque esté comentado, funciona sin eso
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword())) {
             return "redirect:/inicio"; // ?nombre=" + usuario.getNombreUsuario();
@@ -59,14 +60,15 @@ public class UsuarioController {
     }
 
     @RequestMapping("/perfil")
-    String verPerfil(@RequestParam String nombreUsuario, Model model) {
-        Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
-        if (usuario == null) {
-            return "login";
-        }
-        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuario);
-        model.addAttribute("usuario", usuario);
+    String verPerfil(Model model) {
+
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
+        model.addAttribute("usuarioActual", usuarioActual);
+
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);
+
         model.addAttribute("posts", posts);
+
         return "perfil_usuario";
     }
 
