@@ -12,4 +12,9 @@ public interface DAOPost {
     List<Post> getPostPorUsuario(Usuario usuario);
     int getNumeroReposts(Post post);
     List<Post> getPosts();
+    List<Post> ordenarAscendente();
+    List<Post> ordenarDescendente();
+    List<Post> buscarPorUsuario(String usuario);
+    //List<Post> buscarPorContenido(String contenido);
+    //List<Post> buscarPorFecha(String fecha);
 }

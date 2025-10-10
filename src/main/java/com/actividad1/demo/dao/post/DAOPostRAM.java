@@ -1,15 +1,16 @@
 package com.actividad1.demo.dao.post;
 
+import com.actividad1.demo.dao.DAOFactory;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DAOPostRAM implements DAOPost {
     private int idIndex = 0;
     public List<Usuario> usuariosReposts;
+    public List<Post> postsFiltrados;
     public List<Post> posts;
 
     public DAOPostRAM() {
@@ -58,6 +59,28 @@ public class DAOPostRAM implements DAOPost {
     @Override
     public List<Post> getPosts() {
         return this.posts;
+    }
+
+    @Override
+    public List<Post> ordenarAscendente() {
+        this.posts.sort(Comparator.comparing(Post::getFecha));
+        return this.posts;
+    }
+
+    @Override
+    public List<Post> ordenarDescendente() {
+        this.posts.sort((p1, p2) -> p2.getFecha().compareTo(p1.getFecha()));
+        return this.posts;
+    }
+
+    @Override
+    public List<Post> buscarPorUsuario(String usuario) {
+        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
+            if (p.getUsuario().getNombreUsuario().equals(usuario)) {
+                postsFiltrados.add(p);
+            }
+        }
+        return postsFiltrados;
     }
 
 }

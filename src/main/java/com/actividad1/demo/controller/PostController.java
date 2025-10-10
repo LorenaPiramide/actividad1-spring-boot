@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -95,4 +96,11 @@ public class PostController {
 
         return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
     }
+
+//    @GetMapping("/filtro")
+//    String filtrarPorUsuario(@RequestParam String nombreUsuario, Model model) {
+//
+//        List<Post> postsPorUsuario = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(nombreUsuario);
+//
+//    }
 }

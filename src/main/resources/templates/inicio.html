@@ -6,7 +6,23 @@
 </head>
 <body>
     <div th:replace="/fragments/nav"></div>
-    <h3>Este es el inicio</h3>
+
+    <form>
+        <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
+        <button>Buscar</button>
+        <br>
+        <input name="texto" type="text" placeholder="Contenido">
+        <button>Buscar</button>
+        <br>
+        <input name="fecha" type="text" placeholder="Fecha">
+        <button>Buscar</button>
+        <br>
+        <button>Fecha ascendente</button>
+        <button>Fecha descendente</button>
+        <br>
+    </form>
+
+    <h3>Inicio</h3>
     <div th:each="post : ${posts}">
         <p th:text="${post.texto}"><br></p>
         <p>Usuario: <span th:text="${post.usuario.nombreUsuario}"></span></p>
