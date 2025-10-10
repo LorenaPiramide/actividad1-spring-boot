@@ -105,8 +105,16 @@ public class PostController {
 //    }
 
     @GetMapping("/ascendente")
-    String ascendente(@RequestParam String nombreUsuario, Model model) {
+    String ascendente(Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarAscendente();
+        model.addAttribute("posts", posts);
+
+        return "redirect:/inicio";
+    }
+
+    @GetMapping("/descendente")
+    String descendente(Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarDescendente();
         model.addAttribute("posts", posts);
 
         return "redirect:/inicio";
