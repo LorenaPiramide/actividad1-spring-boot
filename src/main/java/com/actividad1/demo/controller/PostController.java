@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,7 +40,7 @@ public class PostController {
     String getPosts(@RequestParam(required = false) String nombreUsuario, Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);
-
+        System.out.println("nombreusuario: "+nombreUsuario);
         if (nombreUsuario != null) {
             Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
             if (usuario != null) {
@@ -63,14 +62,14 @@ public class PostController {
         }
 
         if (postOriginal == null) {
-            return "redirect:/inicio?nombreUsuario" + nombreUsuario;
+            return "redirect:/inicio"; // ?nombreUsuario=" + nombreUsuario;
         }
 
         Usuario usuarioRepost = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
 
         DAOFactory.getInstance().getDaoPost().repost(postOriginal, usuarioRepost);
 
-        return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
+        return "redirect:/inicio"; // ?nombreUsuario=" + nombreUsuario;
     }
 
     @PostMapping("/like")
@@ -84,7 +83,7 @@ public class PostController {
         }
 
         if (post == null) {
-            return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
+            return "redirect:/inicio"; // ?nombreUsuario=" + nombreUsuario;
         }
 
         Usuario usuario = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
@@ -94,7 +93,7 @@ public class PostController {
 
         post.addLike(nombreUsuario);
 
-        return "redirect:/inicio?nombreUsuario=" + nombreUsuario;
+        return "redirect:/inicio"; //?nombreUsuario=" + nombreUsuario;
     }
 
 //    @GetMapping("/filtro")
@@ -109,7 +108,7 @@ public class PostController {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarAscendente();
         model.addAttribute("posts", posts);
 
-        return "redirect:/inicio";
+        return "inicio";
     }
 
     @GetMapping("/descendente")
@@ -117,6 +116,6 @@ public class PostController {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarDescendente();
         model.addAttribute("posts", posts);
 
-        return "redirect:/inicio";
+        return "inicio";
     }
 }

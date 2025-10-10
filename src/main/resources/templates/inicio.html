@@ -17,14 +17,16 @@
         <input name="fecha" type="text" placeholder="Fecha">
         <button>Buscar</button>
         <br>
-        <form th:action="@{/ascendente}" method="get">
-            <button>Fecha ascendente</button>
-        </form>
-        <form th:action="@{/descendente}" method="get">
-            <button>Fecha descendente</button>
-        </form>
-        <br>
+
     </form>
+
+    <form th:action="@{/ascendente}" method="get">
+        <button>Fecha ascendente</button>
+    </form>
+    <form th:action="@{/descendente}" method="get">
+        <button>Fecha descendente</button>
+    </form>
+    <br>
 
     <h3>Inicio</h3>
     <div th:each="post : ${posts}">
