@@ -99,8 +99,16 @@ public class PostController {
 
 //    @GetMapping("/filtro")
 //    String filtrarPorUsuario(@RequestParam String nombreUsuario, Model model) {
-//
-//        List<Post> postsPorUsuario = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(nombreUsuario);
+//        Usuario usuarioBuscado = DAOFactory.getInstance().getDaoUsuario().buscarPorNombre(nombreUsuario);
+//        List<Post> postsPorUsuario = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioBuscado);
 //
 //    }
+
+    @GetMapping("/ascendente")
+    String ascendente(@RequestParam String nombreUsuario, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarAscendente();
+        model.addAttribute("posts", posts);
+
+        return "redirect:/inicio";
+    }
 }
