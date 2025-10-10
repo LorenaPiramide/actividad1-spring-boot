@@ -46,7 +46,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     String loginUsuario(Usuario usuario, Model model) {
-        // todo, arreglar esto, que es lo que peta, si no pongo el ?nombre=" + usuario.getNombreUsuario();
+        // todo, arreglar esto, que es lo que peta, si no pongo el ?nombre=" + usuario.getNombreUsuario(); Lo demás, aunque esté comentado, funciona sin eso
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword())) {
             return "redirect:/inicio"; // ?nombre=" + usuario.getNombreUsuario();
         }
