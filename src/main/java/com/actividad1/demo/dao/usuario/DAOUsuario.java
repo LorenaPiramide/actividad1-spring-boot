@@ -4,6 +4,7 @@ import com.actividad1.demo.entidades.Usuario;
 
 import java.util.List;
 
+// UsuarioService
 public interface DAOUsuario {
 
     List<Usuario> getUsuarios();
