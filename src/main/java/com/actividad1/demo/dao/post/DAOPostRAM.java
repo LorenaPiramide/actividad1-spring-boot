@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class DAOPostRAM implements DAOPost {
+public class DAOPostRAM { //implements DAOPost {
     private int idIndex = 0;
     public List<Usuario> usuariosReposts;
     //public List<Post> postsFiltrados;
@@ -19,14 +19,14 @@ public class DAOPostRAM implements DAOPost {
         this.posts = new ArrayList<>();
     }
 
-    @Override
+    //@Override
     public void addPost(Post post) {
         post.setId(idIndex);
         idIndex++;
         this.posts.add(post);
     }
 
-    @Override
+    //@Override
     public void repost(Post postOriginal, Usuario usuarioRepost) {
         Post repost = new Post(postOriginal.getTexto(), usuarioRepost, true);
 
@@ -35,7 +35,7 @@ public class DAOPostRAM implements DAOPost {
         this.addPost(repost);
     }
 
-    @Override
+    //@Override
     public List<Post> getPostPorUsuario(Usuario usuario) {
         List<Post> postUSuario = new ArrayList<>();
         for (Post post : this.posts) {
@@ -46,7 +46,7 @@ public class DAOPostRAM implements DAOPost {
         return postUSuario;
     }
 
-    @Override
+    //@Override
     public int getNumeroReposts(Post post) {
         int mostrarNumeroReposts = 0;
         for (Post p : this.posts) {
@@ -57,24 +57,24 @@ public class DAOPostRAM implements DAOPost {
         return mostrarNumeroReposts;
     }
 
-    @Override
+    //@Override
     public List<Post> getPosts() {
         return this.posts;
     }
 
-    @Override
+    //@Override
     public List<Post> ordenarAscendente() {
         this.posts.sort(Comparator.comparing(Post::getFecha));
         return this.posts;
     }
 
-    @Override
+    //@Override
     public List<Post> ordenarDescendente() {
         this.posts.sort((p1, p2) -> p2.getFecha().compareTo(p1.getFecha()));
         return this.posts;
     }
 
-    @Override
+    //@Override
     public List<Post> filtrarPorUsuario(String usuario) {
         List<Post> postsFiltrados = new ArrayList<>();
         for (Post post : this.posts) {
@@ -85,7 +85,7 @@ public class DAOPostRAM implements DAOPost {
         return postsFiltrados;
     }
 
-    @Override
+    //@Override
     public List<Post> filtrarPorContenido(String texto) {
         List<Post> postsFiltrados = new ArrayList<>();
         for (Post post : this.posts) {
@@ -96,7 +96,7 @@ public class DAOPostRAM implements DAOPost {
         return postsFiltrados;
     }
 
-    @Override
+    //@Override
     public List<Post> filtrarPorFecha(String fechaString) {
         List<Post> postsFiltrados = new ArrayList<>();
         try {

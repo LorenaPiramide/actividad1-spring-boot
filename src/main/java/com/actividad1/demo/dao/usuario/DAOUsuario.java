@@ -10,7 +10,7 @@ public interface DAOUsuario {
     List<Usuario> getUsuarios();
     void guardaUsuario(Usuario usuario);
     boolean comprobarLogin(String nombreUsuario, String password);
-    Usuario buscarPorNombre(String nombreUsuario);
+    //Usuario buscarPorNombre(String nombreUsuario);
     boolean existeUsuario(String nombreUsuario);
     Usuario getUsuarioActual();
 

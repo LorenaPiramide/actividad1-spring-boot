@@ -8,7 +8,7 @@ import java.util.List;
 // PostService
 public interface DAOPost {
 
-    void addPost(Post post);
+    void addPost(String texto, String fecha);
     void repost(Post post, Usuario usuario);
     List<Post> getPostPorUsuario(Usuario usuario);
     int getNumeroReposts(Post post);

@@ -3,7 +3,6 @@ package com.actividad1.demo.controller;
 import com.actividad1.demo.dao.DAOFactory;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ public class PostController {
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
         Post post = new Post(texto, usuarioActual);
         post.setFecha(LocalDateTime.now());
-        DAOFactory.getInstance().getDaoPost().addPost(post);
+        //DAOFactory.getInstance().getDaoPost().addPost(post); todo estaba antes de poner la bd
 
         model.addAttribute("usuarioActual", usuarioActual);
 

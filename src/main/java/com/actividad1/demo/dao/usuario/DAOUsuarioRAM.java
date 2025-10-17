@@ -28,15 +28,15 @@ public class DAOUsuarioRAM implements DAOUsuario {
         this.usuarios.add(usuario);
     }
 
-    @Override
-    public Usuario buscarPorNombre(String nombreUsuario) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
-                return usuario;
-            }
-        }
-        return null;
-    }
+//    @Override
+//    public Usuario buscarPorNombre(String nombreUsuario) {
+//        for (Usuario usuario : usuarios) {
+//            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+//                return usuario;
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
     public boolean existeUsuario(String nombreUsuario) {

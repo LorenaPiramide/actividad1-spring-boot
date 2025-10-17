@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
+    private int id; // Antes estaba = -1, pero ahora está en bd
     private String texto;
-    private int id = -1;
     private Usuario usuario;
-    private boolean repost = false;
+    private boolean repost = false; // No lo uso en bd
     private LocalDateTime fecha;
-    private List<String> usuariosLike;
+    private List<String> usuariosLike; // No lo uso en bd
 
     public Post(String texto, Usuario usuario, boolean repost) {
         this.texto = texto;
@@ -22,7 +22,12 @@ public class Post {
     public Post(String texto, Usuario usuario) {
         this.texto = texto;
         this.usuario = usuario;
-        this.usuariosLike = new ArrayList<>();
+        //this.usuariosLike = new ArrayList<>(); Antes lo usaba sin bd
+    }
+
+    public Post(String texto, LocalDateTime fecha) {
+        this.texto = texto;
+        this.fecha = fecha;
     }
 
     public Post() {
@@ -97,6 +102,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "\nTexto: " + texto + " " + usuario;
+        return "\nTexto: " + texto + ". " + usuario;
     }
 }

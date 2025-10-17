@@ -17,6 +17,7 @@ public class BDConnector {
                         "coches-prueba.cx0imquaojhi.us-east-1.rds.amazonaws.com",
                         "admin", "QTSiGwgBkgPb94");
             } catch (SQLException e) {
+                System.out.println("Conexión fallida.");
                 throw new RuntimeException(e);
             }
         }
