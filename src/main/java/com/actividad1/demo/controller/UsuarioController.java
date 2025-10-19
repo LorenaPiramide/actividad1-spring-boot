@@ -44,15 +44,17 @@ public class UsuarioController {
 //    }
 
     @PostMapping("/login")
-    String loginUsuario(Usuario usuario) {
-        if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuario.getNombreUsuario(), usuario.getPassword())) {
-            return "redirect:/inicio";
+    String loginUsuario(Model model) {
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
+        if (usuarioActual != null) {
+            model.addAttribute("usuarioActual", usuarioActual);
         }
         return "login";
     }
 
     @GetMapping("/logout")
     String logout(){
+
         return "redirect:/login";
     }
 

@@ -14,32 +14,45 @@ import java.util.List;
 
 public class DAOPostMySQL implements DAOPost{
     @Override
-    public void addPost(String texto, String fecha) {
+    public void addPost(String texto, String nombreUsuario) {
         try {
-            String query = "INSERT INTO Post VALUES (?, ?)";
+            String query = "INSERT INTO Post (texto, fk_usuario_post, fecha) VALUES (?, ?, NOW())";
             PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
-            preparedStatement.setString(0, texto);
-            preparedStatement.setDate(1, Date.valueOf(fecha));
+            preparedStatement.setString(1, texto);
+            preparedStatement.setString(2, nombreUsuario);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException();
         }
     }
 
-    @Override
-    public void repost(Post post, Usuario usuario) {
-
-    }
+//    @Override
+//    public void repost(Post post, Usuario usuario) {
+//
+//    }
 
     @Override
     public List<Post> getPostPorUsuario(Usuario usuario) {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Usuario WHERE fk_usuario_post = ?";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, usuario.getNombreUsuario());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
     }
 
-    @Override
-    public int getNumeroReposts(Post post) {
-        return 0;
-    }
+//    @Override
+//    public int getNumeroReposts(Post post) {
+//        return 0;
+//    }
 
     @Override
     public List<Post> getPosts() {
@@ -49,25 +62,49 @@ public class DAOPostMySQL implements DAOPost{
             PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
 
-            // Creo que tengo que obtener el id, pero debería hacer un constructor con el id???? Vacío no cuela, lo he probado
-            if (rs.next()) {
-                Post post = new Post(rs.getString("texto"), LocalDateTime.parse(rs.getString("fecha")));
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return List.of();
+        return posts;
     }
 
     @Override
     public List<Post> ordenarAscendente() {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Post ORDER BY fecha ASC";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
     }
 
     @Override
     public List<Post> ordenarDescendente() {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Post ORDER BY fecha DESC";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
     }
 
     @Override

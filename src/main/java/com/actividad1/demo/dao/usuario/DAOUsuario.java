@@ -13,5 +13,4 @@ public interface DAOUsuario {
     //Usuario buscarPorNombre(String nombreUsuario);
     boolean existeUsuario(String nombreUsuario);
     Usuario getUsuarioActual();
-
 }

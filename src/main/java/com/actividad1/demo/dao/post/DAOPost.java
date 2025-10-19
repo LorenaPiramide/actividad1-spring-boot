@@ -9,9 +9,9 @@ import java.util.List;
 public interface DAOPost {
 
     void addPost(String texto, String fecha);
-    void repost(Post post, Usuario usuario);
+    //void repost(Post post, Usuario usuario);
     List<Post> getPostPorUsuario(Usuario usuario);
-    int getNumeroReposts(Post post);
+    //int getNumeroReposts(Post post);
     List<Post> getPosts();
     List<Post> ordenarAscendente();
     List<Post> ordenarDescendente();

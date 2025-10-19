@@ -1,8 +1,10 @@
 package com.actividad1.demo.dao;
 
 import com.actividad1.demo.dao.post.DAOPost;
+import com.actividad1.demo.dao.post.DAOPostMySQL;
 import com.actividad1.demo.dao.post.DAOPostRAM;
 import com.actividad1.demo.dao.usuario.DAOUsuario;
+import com.actividad1.demo.dao.usuario.DAOUsuarioMySQL;
 import com.actividad1.demo.dao.usuario.DAOUsuarioRAM;
 
 public class DAOFactory {
@@ -22,14 +24,14 @@ public class DAOFactory {
 
     public DAOUsuario getDaoUsuario(){
         if(this.daoUsuario == null){
-            this.daoUsuario = new DAOUsuarioRAM();
+            this.daoUsuario = new DAOUsuarioMySQL();
         }
         return this.daoUsuario;
     }
 
     public DAOPost getDaoPost(){
         if(this.daoPost == null){
-            this.daoPost = new DAOPostRAM();
+            this.daoPost = new DAOPostMySQL();
         }
         return daoPost;
     }

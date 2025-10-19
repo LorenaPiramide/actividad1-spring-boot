@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -25,14 +24,12 @@ public class PostController {
 
     // Post → Creación de datos, formularios, etc. Se le puede pasar un body
     @PostMapping("/post/crear")
-    String guardaPost(@RequestParam String texto, Model model) {
+    String guardaPost(@RequestParam String texto) { // Antes estaba Model model como 2o parámetro
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
-        Post post = new Post(texto, usuarioActual);
-        post.setFecha(LocalDateTime.now());
-        //DAOFactory.getInstance().getDaoPost().addPost(post); todo estaba antes de poner la bd
-
-        model.addAttribute("usuarioActual", usuarioActual);
-
+        if (usuarioActual == null) {
+            return "redirect:/login";
+        }
+        DAOFactory.getInstance().getDaoPost().addPost(texto, usuarioActual.getNombreUsuario());
         return "perfil_usuario";
     }
 
@@ -65,8 +62,6 @@ public class PostController {
 
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
 
-        DAOFactory.getInstance().getDaoPost().repost(postOriginal, usuarioActual);
-
         return "redirect:/inicio";
     }
 
@@ -87,7 +82,7 @@ public class PostController {
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
 
 
-        post.addLike(usuarioActual.getNombreUsuario());
+        //post.addLike(usuarioActual.getNombreUsuario());
 
         return "redirect:/inicio";
     }
