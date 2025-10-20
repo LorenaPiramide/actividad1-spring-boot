@@ -31,19 +31,21 @@
     <h3>Inicio</h3>
     <div th:each="post : ${posts}">
         <p th:text="${post.texto}"><br></p>
-        <p>Usuario: <span th:text="${post.usuario.nombreUsuario}"></span></p>
+        <p>Usuario: <span th:text="${post.usuario}"></span></p> <!--post.usuario.mombreUsuario -->
         <p>Fecha de publicación: <span th:text="${#temporals.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
         <form th:action="@{/repost}" method="post">
             <input type="hidden" name="postId" th:value="${post.id}">
             <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}">
             <button type="submit">Repostear</button>
         </form>
+        <span th:text="${@daoFactory.getDaoPost().getNumeroReposts(post.id)}">0</span> likes
         <form th:action="@{/like}" method="post">
             <input type="hidden" name="postId" th:value="${post.id}" />
             <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}"/>
             <button type="submit">Me gusta</button>
         </form>
-        <span th:text="${post.numeroLikes}">0</span> like
+        <span th:text="${@daoFactory.getDaoPost().getNumeroLikes(post.id)}">0</span> likes
+        <!--<span th:text="${post.numeroLikes}">0</span> like-->
     </div>
 </body>
 </html>

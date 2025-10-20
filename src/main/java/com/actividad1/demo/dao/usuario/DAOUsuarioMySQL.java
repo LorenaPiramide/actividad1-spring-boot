@@ -36,11 +36,9 @@ public class DAOUsuarioMySQL implements DAOUsuario {
     public void guardaUsuario(Usuario usuario) {
         try {
             String query = "INSERT INTO Usuario (nombre_usuario, password) VALUES (?, ?)";
-
             PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
             preparedStatement.setString(1, usuario.getNombreUsuario());
             preparedStatement.setString(2, usuario.getPassword());
-
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -56,18 +54,20 @@ public class DAOUsuarioMySQL implements DAOUsuario {
             preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
 
-            if (rs.next()) {
-                //usuarioActual = new Usuario(nombreUsuario, password);
-                Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario); // Podría buscar el usuario por nombre
-                // todo, aunque aquí parece que no hace falta porque está en usuarioController?
-                return true;
-            }
+            return rs.next();
+
+//            if (rs.next()) {
+//                //usuarioActual = new Usuario(nombreUsuario, password);
+//              Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario); // Podría buscar el usuario por nombre
+//                // todo, aunque aquí parece que no hace falta porque está en usuarioController?
+//                return true;
+//            }
 
         } catch (SQLException e) {
             throw new RuntimeException();
         }
 
-        return false;
+        //return false;
     }
 
     // Se comprueba si existe o no, porque no puede haber 2 usuarios con el mismo nombre
@@ -80,46 +80,47 @@ public class DAOUsuarioMySQL implements DAOUsuario {
             preparedStatement.setString(1, nombreUsuario);
             ResultSet rs = preparedStatement.executeQuery();
 
-            if (rs.next()) {
-                return true;
-            }
+            return rs.next();
+//            if (rs.next()) {
+//                return true;
+//            }
 
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return false;
+        //return false;
     }
 
     // todo, arreglar esto también
     // Esto antes era getUsuarioActual, que devolvía el usuarioActual de static, ahora lo he modificado por buscarUsuarioPorNombre
     @Override
     public Usuario obtenerUsuarioPorNombre(String nombreUsuario) {
-        String query = "SELECT * FROM Usuario WHERE nombreUsuario = ?";
-
-        try {
-            PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Usuario usuario = new Usuario(rs.getString("nombre_usuario"), rs.getString("password"));
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-
+        String query = "SELECT * FROM Usuario WHERE nombre_usuario = ?";
         try {
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
-            ps.setString(1, nombreUsuario); // todo ????? Hay que arreglar muchas cosas de posts
+            ps.setString(1, nombreUsuario);
             ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
+            if (rs.next()) {
                 return new Usuario(rs.getString("nombre_usuario"), rs.getString("password"));
             }
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }
         return null;
+
+//        try {
+//            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+//            ps.setString(1, nombreUsuario); // todo ????? Hay que arreglar muchas cosas de posts
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                return new Usuario(rs.getString("nombre_usuario"), rs.getString("password"));
+//            }
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException();
+//        }
+//        return null;
     }
 
 //    public void cerrarSesion() {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -16,29 +17,35 @@ public class PostController {
 
     // Get → Recibir datos. No se puede pasar un body
     @GetMapping("/crear_post")
-    String crearPost(Model model) {
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+    String crearPost(@RequestParam String nombreUsuario, Model model) {
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
         return "crear_post";
     }
 
     // Post → Creación de datos, formularios, etc. Se le puede pasar un body
     @PostMapping("/post/crear")
-    String guardaPost(@RequestParam String texto) { // Antes estaba Model model como 2o parámetro
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+    String guardaPost(@RequestParam String nombreUsuario, @RequestParam String texto, Model model) { // Antes estaba Model model como 2o parámetro
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         if (usuarioActual == null) {
             return "redirect:/login";
         }
         DAOFactory.getInstance().getDaoPost().addPost(texto, usuarioActual.getNombreUsuario());
+
+//        todo, no sé si funciona
+//        model.addAttribute("usuarioActual", usuarioActual);
+//        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);
+//        model.addAttribute("posts", posts);
+
         return "perfil_usuario";
     }
 
     @GetMapping("/inicio")
-    String getPosts(Model model) {
+    String getPosts(@RequestParam String nombreUsuario, Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
 
         model.addAttribute("usuarioActual", usuarioActual);
 
@@ -46,45 +53,71 @@ public class PostController {
     }
 
     @PostMapping("/repost")
-    String repostear(@RequestParam int postId) {
-        Post postOriginal = null;
+    String repostear(@RequestParam String nombreUsuario, @RequestParam int postId, Model model) {
+//        Post postOriginal = null;
+//
+//        for (Post post : DAOFactory.getInstance().getDaoPost().getPosts()) {
+//            if (post.getId() == postId) {
+//                postOriginal = post;
+//                break;
+//            }
+//        }
+//
+//        if (postOriginal == null) {
+//            return "redirect:/inicio";
+//        }
 
-        for (Post post : DAOFactory.getInstance().getDaoPost().getPosts()) {
-            if (post.getId() == postId) {
-                postOriginal = post;
-                break;
-            }
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
+
+        if (!DAOFactory.getInstance().getDaoPost().usuarioReposteado(nombreUsuario, postId)) {
+            DAOFactory.getInstance().getDaoPost().repostear(nombreUsuario, postId);
         }
 
-        if (postOriginal == null) {
-            return "redirect:/inicio";
-        }
+        // todo hace falta?
+        model.addAttribute("usuarioActual", usuarioActual);
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
+        model.addAttribute("posts", posts);
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
-
-        return "redirect:/inicio";
+//        return "redirect:/inicio";
+        return "inicio";
     }
 
     @PostMapping("/like")
-    String darLike(@RequestParam int postId) {
-        Post post = null;
-        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
-            if (p.getId() == postId) {
-                post = p;
-                break;
-            }
+    String darLike(@RequestParam String nombreUsuario, @RequestParam int postId, Model model) {
+
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
+
+        if (DAOFactory.getInstance().getDaoPost().usuarioDioLike(nombreUsuario, postId)) {
+            DAOFactory.getInstance().getDaoPost().quitarLike(nombreUsuario, postId);
+        } else {
+            DAOFactory.getInstance().getDaoPost().darLike(nombreUsuario, postId);
         }
 
-        if (post == null) {
-            return "redirect:/inicio";
-        }
+        //todo, esto hace falta??
+//        model.addAttribute("usuarioActual", usuarioActual);
+        //todo no sé si esto hace falta...
+//        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
+//        model.addAttribute("posts", posts);
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+//        Post post = null;
+//        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
+//            if (p.getId() == postId) {
+//                post = p;
+//                break;
+//            }
+//        }
+//
+//        if (post == null) {
+//            return "redirect:/inicio";
+//        }
+//
+//        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
 
 
         //post.addLike(usuarioActual.getNombreUsuario());
 
-        return "redirect:/inicio";
+//        return "redirect:/inicio";
+        return "inicio";
     }
 
     @GetMapping("/filtrar")
@@ -100,7 +133,7 @@ public class PostController {
             postFiltrados = DAOFactory.getInstance().getDaoPost().filtrarPorFecha(fecha.trim());
         }
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
         model.addAttribute("posts", postFiltrados);
 
@@ -108,9 +141,9 @@ public class PostController {
     }
 
     @GetMapping("/ascendente")
-    String ascendente(Model model) {
+    String ascendente(@RequestParam String nombreUsuario, Model model) {
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
 
         List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarAscendente();
@@ -120,9 +153,9 @@ public class PostController {
     }
 
     @GetMapping("/descendente")
-    String descendente(Model model) {
+    String descendente(@RequestParam String nombreUsuario, Model model) {
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre();
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
 
         List<Post> posts = DAOFactory.getInstance().getDaoPost().ordenarDescendente();

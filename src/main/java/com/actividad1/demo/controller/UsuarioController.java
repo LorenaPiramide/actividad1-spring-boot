@@ -23,16 +23,10 @@ public class UsuarioController {
     // todo, modificación en comprobarLogin()
     @PostMapping("/login")
     String loginUsuario(@RequestParam String nombreUsuario, @RequestParam String password, Model model) {
-        //Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(nombreUsuario, password)) {
-            Usuario usuario = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario); // Obtener usuario y sacar el nombre
-            //todo, con esto vale??
+            Usuario usuario = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
             model.addAttribute("usuarioActual", usuario);
-            return "perfil_usuario";
-//            model.addAttribute("usuarioActual", usuarioActual);
-//            if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuarioActual.getNombreUsuario(), usuarioActual.getPassword())) {
-//                return "perfil_usuario";
-//            }
+            return "inicio";
         } else {
             model.addAttribute("Error", "Nombre de usuario o contraseña incorrectos.");
             return "login";
@@ -54,21 +48,11 @@ public class UsuarioController {
         return "redirect:/login";
     }
 
-    // Muestra los usuarios pero creo que no hace falta
-//    @GetMapping("/usuarios")
-//    String getUsuarios() {
-//        DAOFactory daoFactory = DAOFactory.getInstance();
-//        List<Usuario> usuarios = daoFactory.getDaoUsuario().getUsuarios();
-//        System.out.println(usuarios);
-//        return "usuarios";
-//    }
-
     @GetMapping("/logout")
     String logout(){
         return "redirect:/login";
     }
 
-    // todo, he modificado esto también porque idk
     @RequestMapping("/perfil")
     String verPerfil(@RequestParam String nombreUsuario, Model model) {
 

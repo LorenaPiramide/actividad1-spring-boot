@@ -9,7 +9,7 @@
     <h3>Perfil de usuario de <span th:text="${usuarioActual.nombreUsuario}"></span></h3>
     <div th:each="post : ${posts}">
         <p th:text="${post.texto}"><br></p>
-        <p>Usuario: <span th:text="${post.usuario.nombreUsuario}"></span></p>
+        <p>Usuario: <span th:text="${post.usuario}"></span></p> <!--post.usuario.nombreUsuario -->
         <p>Fecha de publicación: <span th:text="${#temporals.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
         <form th:action="@{/repost}" method="post">
             <input type="hidden" name="postId" th:value="${post.id}">

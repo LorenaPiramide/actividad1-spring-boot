@@ -3,6 +3,7 @@ package com.actividad1.demo.dao.post;
 import com.actividad1.demo.dao.BDConnector;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
+import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,15 +27,10 @@ public class DAOPostMySQL implements DAOPost{
         }
     }
 
-//    @Override
-//    public void repost(Post post, Usuario usuario) {
-//
-//    }
-
     @Override
     public List<Post> getPostPorUsuario(Usuario usuario) {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM Usuario WHERE fk_usuario_post = ?";
+        String query = "SELECT * FROM Post WHERE fk_usuario_post = ?";
         try {
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, usuario.getNombreUsuario());
@@ -48,11 +44,6 @@ public class DAOPostMySQL implements DAOPost{
         }
         return posts;
     }
-
-//    @Override
-//    public int getNumeroReposts(Post post) {
-//        return 0;
-//    }
 
     @Override
     public List<Post> getPosts() {
@@ -109,16 +100,156 @@ public class DAOPostMySQL implements DAOPost{
 
     @Override
     public List<Post> filtrarPorUsuario(String usuario) {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Post WHERE fk_usuario_post = ?";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, usuario);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
     }
 
     @Override
     public List<Post> filtrarPorContenido(String contenido) {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Post WHERE texto = ?";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, contenido);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_ usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
     }
 
     @Override
     public List<Post> filtrarPorFecha(String fecha) {
-        return List.of();
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT * FROM Post WHERE fecha = ?";
+        try {
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, fecha);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_ usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return posts;
+    }
+
+    @Override
+    public void darLike(String nombreUsuario, int postId) {
+        try {
+            String query = "INSERT INTO Likes (usuario_like, post_like) VALUES (?, ?)"; //todo, mirar el nombre en la base de datos cuando se pueda, AWS está caído
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, nombreUsuario);
+            ps.setInt(2, postId);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void quitarLike(String nombreUsuario, int postId) {
+        try {
+            String query = "DELETE FROM Likes WHERE usuario_like = ? AND post_like = ?"; //todo nombres bd
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, nombreUsuario);
+            ps.setInt(2, postId);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public boolean usuarioDioLike(String nombreUsuario, int postId) {
+        try {
+            String query = "SELECT * FROM Likes WHERE usuario_like = ? AND post_like = ?";
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, nombreUsuario);
+            ps.setInt(2, postId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public int getNumeroLikes(int postId) {
+        try {
+            String query = "SELECT COUNT(*) as count FROM Likes WHERE post_like = ?";
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setInt(1, postId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void repostear(String nombreUsuario, int postId) {
+        try {
+            String query = "INSERT INTO Repost (usuario_repost, post_repost) VALUES (?, ?)";
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, nombreUsuario);
+            ps.setInt(2, postId);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+    }
+
+    @Override
+    public boolean usuarioReposteado(String nombreUsuario, int postId) {
+        try {
+            String query = "SELECT * FROM Repost WHERE usuario_repost = ? AND post_repost = ?";
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setString(1, nombreUsuario);
+            ps.setInt(2, postId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public int getNumeroReposts(int postId) {
+
+        try {
+            String query = "SELECT COUNT(*) as count FROM Repost WHERE post_repost = ?";
+            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
+            ps.setInt(1, postId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 }

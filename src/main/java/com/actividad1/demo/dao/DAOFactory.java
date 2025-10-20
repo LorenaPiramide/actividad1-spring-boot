@@ -2,10 +2,8 @@ package com.actividad1.demo.dao;
 
 import com.actividad1.demo.dao.post.DAOPost;
 import com.actividad1.demo.dao.post.DAOPostMySQL;
-import com.actividad1.demo.dao.post.DAOPostRAM;
 import com.actividad1.demo.dao.usuario.DAOUsuario;
 import com.actividad1.demo.dao.usuario.DAOUsuarioMySQL;
-import com.actividad1.demo.dao.usuario.DAOUsuarioRAM;
 
 public class DAOFactory {
     private static DAOFactory daoFactory;

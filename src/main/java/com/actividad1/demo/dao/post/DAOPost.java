@@ -9,13 +9,20 @@ import java.util.List;
 public interface DAOPost {
 
     void addPost(String texto, String fecha);
-    //void repost(Post post, Usuario usuario);
     List<Post> getPostPorUsuario(Usuario usuario);
-    //int getNumeroReposts(Post post);
     List<Post> getPosts();
     List<Post> ordenarAscendente();
     List<Post> ordenarDescendente();
     List<Post> filtrarPorUsuario(String usuario);
     List<Post> filtrarPorContenido(String contenido);
     List<Post> filtrarPorFecha(String fecha);
+
+    void darLike(String nombreUsuario, int postId);
+    void quitarLike(String nombreUsuario, int postId);
+    boolean usuarioDioLike(String nombreUsuario, int postId);
+    int getNumeroLikes(int postId);
+
+    void repostear(String nombreUsuario, int postId);
+    boolean usuarioReposteado(String nombreUsuario, int postId);
+    int getNumeroReposts(int postId);
 }
