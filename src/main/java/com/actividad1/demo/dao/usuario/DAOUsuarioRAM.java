@@ -49,7 +49,7 @@ public class DAOUsuarioRAM implements DAOUsuario {
     }
 
     @Override
-    public Usuario getUsuarioActual() {
+    public Usuario obtenerUsuarioPorNombre() {
         return usuarioActual;
     }
 

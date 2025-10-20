@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,6 +20,25 @@ public class UsuarioController {
         return "login";
     }
 
+    // todo, modificación en comprobarLogin()
+    @PostMapping("/login")
+    String loginUsuario(@RequestParam String nombreUsuario, @RequestParam String password, Model model) {
+        //Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
+        if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(nombreUsuario, password)) {
+            Usuario usuario = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario); // Obtener usuario y sacar el nombre
+            //todo, con esto vale??
+            model.addAttribute("usuarioActual", usuario);
+            return "perfil_usuario";
+//            model.addAttribute("usuarioActual", usuarioActual);
+//            if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(usuarioActual.getNombreUsuario(), usuarioActual.getPassword())) {
+//                return "perfil_usuario";
+//            }
+        } else {
+            model.addAttribute("Error", "Nombre de usuario o contraseña incorrectos.");
+            return "login";
+        }
+    }
+
     @GetMapping("/nuevo_usuario")
     String nuevoUsuario() {
         return "nuevo_usuario";
@@ -27,7 +47,7 @@ public class UsuarioController {
     @PostMapping("/usuarios/registro")
     String guardaUsuario(Usuario usuario, Model model) {
         if (DAOFactory.getInstance().getDaoUsuario().existeUsuario(usuario.getNombreUsuario())) {
-            model.addAttribute("error", "Nombre de usuario no disponible. Vuelve a intentarlo");
+            model.addAttribute("error", "El nombre de usuario ya existe.");
             return "nuevo_usuario";
         }
         DAOFactory.getInstance().getDaoUsuario().guardaUsuario(usuario);
@@ -43,25 +63,16 @@ public class UsuarioController {
 //        return "usuarios";
 //    }
 
-    @PostMapping("/login")
-    String loginUsuario(Model model) {
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
-        if (usuarioActual != null) {
-            model.addAttribute("usuarioActual", usuarioActual);
-        }
-        return "login";
-    }
-
     @GetMapping("/logout")
     String logout(){
-
         return "redirect:/login";
     }
 
+    // todo, he modificado esto también porque idk
     @RequestMapping("/perfil")
-    String verPerfil(Model model) {
+    String verPerfil(@RequestParam String nombreUsuario, Model model) {
 
-        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().getUsuarioActual();
+        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
 
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);

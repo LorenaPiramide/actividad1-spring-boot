@@ -5,7 +5,7 @@
     <title>Login</title>
 </head>
 <body>
-    <form method="post">
+    <form th:action="@{/login}" method="post">
         <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
         <input name="password" type="password" placeholder="Contraseña">
         <button th:ref="@{/inicio}">Acceder</button>
