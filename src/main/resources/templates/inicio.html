@@ -7,23 +7,25 @@
 <body>
     <div th:replace="/fragments/nav"></div>
 
-    <form th:action="@{/filtrar}" method="get">
-        <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
+    <form th:action="@{/filtrar}" method="post">
+        <input name="nombreUsuarioFiltro" type="text" placeholder="Nombre de usuario"/>
         <button>Buscar</button>
         <br>
         <input name="texto" type="text" placeholder="Contenido">
         <button>Buscar</button>
         <br>
-        <input name="fecha" type="date" placeholder="Fecha (dd/MM/yyyy)">
+        <input name="fecha" type="date">
         <button>Buscar</button>
         <br>
-
+        <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}">
     </form>
 
-    <form th:action="@{/ascendente}" method="get">
+    <form th:action="@{/ascendente}" method="post">
+        <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}">
         <button>Fecha ascendente</button>
     </form>
-    <form th:action="@{/descendente}" method="get">
+    <form th:action="@{/descendente}" method="post">
+        <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}"/>
         <button>Fecha descendente</button>
     </form>
     <br>
@@ -33,19 +35,19 @@
         <p th:text="${post.texto}"><br></p>
         <p>Usuario: <span th:text="${post.usuario}"></span></p> <!--post.usuario.mombreUsuario -->
         <p>Fecha de publicación: <span th:text="${#temporals.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+
         <form th:action="@{/repost}" method="post">
             <input type="hidden" name="postId" th:value="${post.id}">
             <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}">
             <button type="submit">Repostear</button>
         </form>
-        <!-- <span th:text="${@daoFactory.getDaoPost().getNumeroReposts(post.id)}">0</span> likes -->
         <form th:action="@{/like}" method="post">
             <input type="hidden" name="postId" th:value="${post.id}" />
             <input type="hidden" name="nombreUsuario" th:value="${usuarioActual.nombreUsuario}"/>
             <button type="submit">Me gusta</button>
         </form>
-        <!-- <span th:text="${@daoFactory.getDaoPost().getNumeroLikes(post.id)}">0</span> likes
-        <span th:text="${post.numeroLikes}">0</span> like-->
+        <hr/>
     </div>
+
 </body>
 </html>

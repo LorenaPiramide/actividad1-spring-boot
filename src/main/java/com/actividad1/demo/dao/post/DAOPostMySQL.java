@@ -51,7 +51,6 @@ public class DAOPostMySQL implements DAOPost{
                 posts.add(post);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return posts;
@@ -60,16 +59,23 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public List<Post> getPosts() {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM Post";
+        String query = "(SELECT id_post, texto, fk_usuario_post, fecha FROM Post) " +
+                "UNION ALL " +
+                "(SELECT p.id_post, p.texto, r.fk_usuario_repost AS fk_usuario_post, r.fecha_repost AS fecha " +
+                "FROM Repost r " +
+                "JOIN Post p ON r.fk_post_repost = p.id_post) " +
+                "ORDER BY fecha DESC";
         try {
             PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                Post post = new Post(rs.getInt("id_post"),
+                Post post = new Post(
+                        rs.getInt("id_post"),
                         rs.getString("texto"),
                         rs.getString("fk_usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
 
@@ -90,7 +96,8 @@ public class DAOPostMySQL implements DAOPost{
                 Post post = new Post(rs.getInt("id_post"),
                         rs.getString("texto"),
                         rs.getString("fk_usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -110,7 +117,8 @@ public class DAOPostMySQL implements DAOPost{
                 Post post = new Post(rs.getInt("id_post"),
                         rs.getString("texto"),
                         rs.getString("fk_usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -128,9 +136,12 @@ public class DAOPostMySQL implements DAOPost{
             ps.setString(1, usuario);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Post post = new Post(rs.getInt("id_post"),
-                        rs.getString("texto"), rs.getString("fk_usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                Post post = new Post(
+                        rs.getInt("id_post"),
+                        rs.getString("texto"),
+                        rs.getString("fk_usuario_post"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -142,16 +153,18 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public List<Post> filtrarPorContenido(String contenido) {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM Post WHERE texto = ?";
+        String query = "SELECT * FROM Post WHERE texto LIKE ?";
         try {
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
-            ps.setString(1, contenido);
+            ps.setString(1, "%" + contenido + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Post post = new Post(rs.getInt("id_post"),
+                Post post = new Post(
+                        rs.getInt("id_post"),
                         rs.getString("texto"),
-                        rs.getString("fk_ usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                        rs.getString("fk_usuario_post"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -163,16 +176,18 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public List<Post> filtrarPorFecha(String fecha) {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM Post WHERE fecha = ?";
+        String query = "SELECT * FROM Post WHERE DATE(fecha) = ?";
         try {
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, fecha);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Post post = new Post(rs.getInt("id_post"),
+                Post post = new Post(
+                        rs.getInt("id_post"),
                         rs.getString("texto"),
-                        rs.getString("fk_ usuario_post"),
-                        rs.getTimestamp("fecha").toLocalDateTime());
+                        rs.getString("fk_usuario_post"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {

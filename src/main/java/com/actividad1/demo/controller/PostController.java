@@ -5,7 +5,6 @@ import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,10 +41,10 @@ public class PostController {
     @PostMapping("/inicio")
     String getPosts(@RequestParam String nombreUsuario, Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
+
         model.addAttribute("posts", posts);
 
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
-
         model.addAttribute("usuarioActual", usuarioActual);
 
         return "inicio";
@@ -84,13 +83,13 @@ public class PostController {
         return "inicio";
     }
 
-    @GetMapping("/filtrar")
-    String filtrar(@RequestParam String nombreUsuario, @RequestParam String texto, @RequestParam String fecha, Model model) {
+    @PostMapping("/filtrar")
+    String filtrar(@RequestParam String nombreUsuario, @RequestParam String nombreUsuarioFiltro, @RequestParam String texto, @RequestParam String fecha, Model model) {
 
         List<Post> postFiltrados = DAOFactory.getInstance().getDaoPost().getPosts();
 
-        if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
-            postFiltrados = DAOFactory.getInstance().getDaoPost().filtrarPorUsuario(nombreUsuario.trim());
+        if (nombreUsuarioFiltro != null && !nombreUsuarioFiltro.trim().isEmpty()) {
+            postFiltrados = DAOFactory.getInstance().getDaoPost().filtrarPorUsuario(nombreUsuarioFiltro.trim());
         } else if (texto != null && !texto.trim().isEmpty()) {
             postFiltrados = DAOFactory.getInstance().getDaoPost().filtrarPorContenido(texto.trim());
         } else if (fecha != null && !fecha.trim().isEmpty()) {
@@ -104,7 +103,7 @@ public class PostController {
         return "inicio";
     }
 
-    @GetMapping("/ascendente")
+    @PostMapping("/ascendente")
     String ascendente(@RequestParam String nombreUsuario, Model model) {
 
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
@@ -116,7 +115,7 @@ public class PostController {
         return "inicio";
     }
 
-    @GetMapping("/descendente")
+    @PostMapping("/descendente")
     String descendente(@RequestParam String nombreUsuario, Model model) {
 
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
