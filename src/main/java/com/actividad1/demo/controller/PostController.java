@@ -78,9 +78,7 @@ public class PostController {
             DAOFactory.getInstance().getDaoPost().darLike(nombreUsuario, postId);
         }
 
-        //todo, esto hace falta??
         model.addAttribute("usuarioActual", usuarioActual);
-        //todo no sé si esto hace falta...
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);
 

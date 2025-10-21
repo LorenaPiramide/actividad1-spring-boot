@@ -52,7 +52,7 @@ public class UsuarioController {
         return "redirect:/login";
     }
 
-    @RequestMapping("/perfil")
+    @PostMapping("/perfil")
     String verPerfil(@RequestParam String nombreUsuario, Model model) {
 
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);

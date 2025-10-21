@@ -26,7 +26,6 @@ public class DAOUsuarioMySQL implements DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-
         return usuarios;
     }
 
