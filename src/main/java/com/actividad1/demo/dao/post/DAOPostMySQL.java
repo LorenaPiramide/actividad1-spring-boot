@@ -27,17 +27,32 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public List<Post> getPostPorUsuario(Usuario usuario) {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM Post WHERE fk_usuario_post = ?";
+        String query = " (SELECT p.id_post, p.texto, p.fk_usuario_post, p.fecha " +
+                "FROM Post p " +
+                "WHERE p.fk_usuario_post = ?) " +
+                "UNION " +
+                "(SELECT p.id_post, p.texto, p.fk_usuario_post, p.fecha " +
+                "FROM Repost r " +
+                "JOIN Post p ON r.fk_post_repost = p.id_post " +
+                "WHERE r.fk_usuario_repost = ?) " +
+                "ORDER BY fecha DESC ";
         try {
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, usuario.getNombreUsuario());
+            ps.setString(2, usuario.getNombreUsuario());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Post post = new Post(rs.getInt("id_post"), rs.getString("texto"), rs.getString("fk_usuario_post"), rs.getTimestamp("fecha").toLocalDateTime());
+                Post post = new Post(
+                        rs.getInt("id_post"),
+                        rs.getString("texto"),
+                        rs.getString("fk_usuario_post"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
                 posts.add(post);
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return posts;
     }
@@ -169,7 +184,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void darLike(String nombreUsuario, int postId) {
         try {
-            String query = "INSERT INTO Like (fk_usuario_like, fk_post_like) VALUES (?, ?)";
+            String query = "INSERT INTO `Like` (`fk_usuario_like`, `fk_post_like`) VALUES (?, ?)";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -182,7 +197,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void quitarLike(String nombreUsuario, int postId) {
         try {
-            String query = "DELETE FROM Like WHERE fk_usuario_like = ? AND fk_post_like = ?";
+            String query = "DELETE FROM `Like` WHERE `fk_usuario_like` = ? AND `fk_post_like` = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -195,7 +210,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public boolean usuarioDioLike(String nombreUsuario, int postId) {
         try {
-            String query = "SELECT * FROM Like WHERE fk_usuario_like = ? AND fk_post_like = ?";
+            String query = "SELECT * FROM `Like` WHERE `fk_usuario_like` = ? AND `fk_post_like` = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -209,7 +224,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public int getNumeroLikes(int postId) {
         try {
-            String query = "SELECT COUNT(*) as count FROM Like WHERE fk_post_like = ?";
+            String query = "SELECT COUNT(*) as count FROM `Like` WHERE `fk_post_like` = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setInt(1, postId);
             ResultSet rs = ps.executeQuery();
@@ -225,7 +240,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void repostear(String nombreUsuario, int postId) {
         try {
-            String query = "INSERT INTO Repost (fk_usuario_repost, fk_post_repost) VALUES (?, ?)";
+            String query = "INSERT INTO Repost (fk_usuario_repost, fk_post_repost, fecha_repost) VALUES (?, ?, NOW())";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -233,7 +248,6 @@ public class DAOPostMySQL implements DAOPost{
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-
     }
 
     @Override
@@ -246,6 +260,7 @@ public class DAOPostMySQL implements DAOPost{
             ResultSet rs = ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
+            System.out.println(e);
             throw new RuntimeException();
         }
     }

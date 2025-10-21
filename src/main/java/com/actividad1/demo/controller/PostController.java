@@ -15,14 +15,15 @@ import java.util.List;
 public class PostController {
 
     // Get → Recibir datos. No se puede pasar un body
-    @GetMapping("/crear_post")
+    // Post → Creación de datos, formularios, etc. Se le puede pasar un body
+
+    @PostMapping("/crear_post")
     String crearPost(@RequestParam String nombreUsuario, Model model) {
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         model.addAttribute("usuarioActual", usuarioActual);
         return "crear_post";
     }
 
-    // Post → Creación de datos, formularios, etc. Se le puede pasar un body
     @PostMapping("/post/crear")
     String guardaPost(@RequestParam String nombreUsuario, @RequestParam String texto, Model model) {
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
@@ -31,7 +32,6 @@ public class PostController {
         }
         DAOFactory.getInstance().getDaoPost().addPost(texto, usuarioActual.getNombreUsuario());
 
-//        todo, no sé si funciona
         model.addAttribute("usuarioActual", usuarioActual);
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);
         model.addAttribute("posts", posts);
@@ -39,7 +39,7 @@ public class PostController {
         return "perfil_usuario";
     }
 
-    @GetMapping("/inicio")
+    @PostMapping("/inicio")
     String getPosts(@RequestParam String nombreUsuario, Model model) {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);
@@ -59,7 +59,6 @@ public class PostController {
             DAOFactory.getInstance().getDaoPost().repostear(nombreUsuario, postId);
         }
 
-        // todo hace falta?
         model.addAttribute("usuarioActual", usuarioActual);
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);

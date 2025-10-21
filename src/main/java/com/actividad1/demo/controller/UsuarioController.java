@@ -23,8 +23,8 @@ public class UsuarioController {
     @PostMapping("/login")
     String loginUsuario(@RequestParam String nombreUsuario, @RequestParam String password, Model model) {
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(nombreUsuario, password)) {
-            Usuario usuario = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
-            model.addAttribute("usuarioActual", usuario);
+            Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
+            model.addAttribute("usuarioActual", usuarioActual);
             return "inicio";
         } else {
             model.addAttribute("Error", "Nombre de usuario o contraseña incorrectos.");

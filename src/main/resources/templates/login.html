@@ -5,11 +5,11 @@
     <title>Login</title>
 </head>
 <body>
-    <form th:action="@{/login}" method="post">
-        <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
-        <input name="password" type="password" placeholder="Contraseña">
-        <button th:ref="@{/inicio}">Acceder</button>
-        <a th:href="@{/nuevo_usuario}">Crear cuenta</a>
-    </form>
+<form th:action="@{/login}" method="post">
+    <input name="nombreUsuario" type="text" placeholder="Nombre de usuario"/>
+    <input name="password" type="password" placeholder="Contraseña">
+    <button type="submit">Acceder</button>
+    <a th:href="@{/nuevo_usuario}">Crear cuenta</a>
+</form>
 </body>
 </html>

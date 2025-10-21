@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAOUsuarioMySQL implements DAOUsuario {
-    //private Usuario usuarioActual = null;
     @Override
     public List<Usuario> getUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
@@ -20,7 +19,9 @@ public class DAOUsuarioMySQL implements DAOUsuario {
             PreparedStatement preparedStatement = BDConnector.getInstance().prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Usuario usuario = new Usuario(rs.getString("nombre_usuario"), rs.getString("password"));
+                Usuario usuario = new Usuario(
+                        rs.getString("nombre_usuario"),
+                        rs.getString("password"));
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -58,7 +59,6 @@ public class DAOUsuarioMySQL implements DAOUsuario {
         }
     }
 
-
     @Override
     public boolean existeUsuario(String nombreUsuario) {
         String query = "SELECT * FROM Usuario WHERE nombre_usuario = ?";
@@ -88,5 +88,4 @@ public class DAOUsuarioMySQL implements DAOUsuario {
         }
         return null;
     }
-
 }
