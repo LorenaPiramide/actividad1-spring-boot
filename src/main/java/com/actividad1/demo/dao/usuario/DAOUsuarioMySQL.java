@@ -30,7 +30,6 @@ public class DAOUsuarioMySQL implements DAOUsuario {
         return usuarios;
     }
 
-    // Igual hay que cambiarlo y poner String nombreUsuario y crear un objeto con esto, igual que la contraseña
     @Override
     public void guardaUsuario(Usuario usuario) {
         try {
