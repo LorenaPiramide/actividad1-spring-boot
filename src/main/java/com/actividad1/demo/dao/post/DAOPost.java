@@ -5,7 +5,6 @@ import com.actividad1.demo.entidades.Usuario;
 
 import java.util.List;
 
-// PostService
 public interface DAOPost {
 
     void addPost(String texto, String fecha);

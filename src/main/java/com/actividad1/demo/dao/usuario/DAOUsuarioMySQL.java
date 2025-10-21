@@ -1,7 +1,6 @@
 package com.actividad1.demo.dao.usuario;
 
 import com.actividad1.demo.dao.BDConnector;
-import com.actividad1.demo.dao.DAOFactory;
 import com.actividad1.demo.entidades.Usuario;
 
 import java.sql.PreparedStatement;
@@ -56,22 +55,12 @@ public class DAOUsuarioMySQL implements DAOUsuario {
 
             return rs.next();
 
-//            if (rs.next()) {
-//                //usuarioActual = new Usuario(nombreUsuario, password);
-//              Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario); // Podría buscar el usuario por nombre
-//                // todo, aunque aquí parece que no hace falta porque está en usuarioController?
-//                return true;
-//            }
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-
-        //return false;
     }
 
-    // Se comprueba si existe o no, porque no puede haber 2 usuarios con el mismo nombre
-    // todo, igual aquí podría hacer que si existe el usuario, en el método de arriba, poner que Usuario usuarioActual = usuario ????
+
     @Override
     public boolean existeUsuario(String nombreUsuario) {
         String query = "SELECT * FROM Usuario WHERE nombre_usuario = ?";
@@ -81,18 +70,11 @@ public class DAOUsuarioMySQL implements DAOUsuario {
             ResultSet rs = preparedStatement.executeQuery();
 
             return rs.next();
-//            if (rs.next()) {
-//                return true;
-//            }
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        //return false;
     }
 
-    // todo, arreglar esto también
-    // Esto antes era getUsuarioActual, que devolvía el usuarioActual de static, ahora lo he modificado por buscarUsuarioPorNombre
     @Override
     public Usuario obtenerUsuarioPorNombre(String nombreUsuario) {
         String query = "SELECT * FROM Usuario WHERE nombre_usuario = ?";
@@ -107,23 +89,6 @@ public class DAOUsuarioMySQL implements DAOUsuario {
             throw new RuntimeException();
         }
         return null;
-
-//        try {
-//            PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
-//            ps.setString(1, nombreUsuario); // todo ????? Hay que arreglar muchas cosas de posts
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                return new Usuario(rs.getString("nombre_usuario"), rs.getString("password"));
-//            }
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException();
-//        }
-//        return null;
     }
 
-//    public void cerrarSesion() {
-//        usuarioActual = null;
-//    }
 }

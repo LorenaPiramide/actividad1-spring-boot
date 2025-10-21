@@ -3,13 +3,10 @@ package com.actividad1.demo.dao.post;
 import com.actividad1.demo.dao.BDConnector;
 import com.actividad1.demo.entidades.Post;
 import com.actividad1.demo.entidades.Usuario;
-import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,7 +152,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void darLike(String nombreUsuario, int postId) {
         try {
-            String query = "INSERT INTO Likes (usuario_like, post_like) VALUES (?, ?)"; //todo, mirar el nombre en la base de datos cuando se pueda, AWS está caído
+            String query = "INSERT INTO Like (fk_usuario_like, fk_post_like) VALUES (?, ?)"; //todo, mirar el nombre en la base de datos cuando se pueda, AWS está caído
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -168,7 +165,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void quitarLike(String nombreUsuario, int postId) {
         try {
-            String query = "DELETE FROM Likes WHERE usuario_like = ? AND post_like = ?"; //todo nombres bd
+            String query = "DELETE FROM Like WHERE fk_usuario_like = ? AND fk_post_like = ?"; //todo nombres bd
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -181,7 +178,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public boolean usuarioDioLike(String nombreUsuario, int postId) {
         try {
-            String query = "SELECT * FROM Likes WHERE usuario_like = ? AND post_like = ?";
+            String query = "SELECT * FROM Like WHERE fk_usuario_like = ? AND fk_post_like = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -195,7 +192,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public int getNumeroLikes(int postId) {
         try {
-            String query = "SELECT COUNT(*) as count FROM Likes WHERE post_like = ?";
+            String query = "SELECT COUNT(*) as count FROM Like WHERE fk_post_like = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setInt(1, postId);
             ResultSet rs = ps.executeQuery();
@@ -211,7 +208,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public void repostear(String nombreUsuario, int postId) {
         try {
-            String query = "INSERT INTO Repost (usuario_repost, post_repost) VALUES (?, ?)";
+            String query = "INSERT INTO Repost (fk_usuario_repost, fk_post_repost) VALUES (?, ?)";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -225,7 +222,7 @@ public class DAOPostMySQL implements DAOPost{
     @Override
     public boolean usuarioReposteado(String nombreUsuario, int postId) {
         try {
-            String query = "SELECT * FROM Repost WHERE usuario_repost = ? AND post_repost = ?";
+            String query = "SELECT * FROM Repost WHERE fk_usuario_repost = ? AND fk_post_repost = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setString(1, nombreUsuario);
             ps.setInt(2, postId);
@@ -238,9 +235,8 @@ public class DAOPostMySQL implements DAOPost{
 
     @Override
     public int getNumeroReposts(int postId) {
-
         try {
-            String query = "SELECT COUNT(*) as count FROM Repost WHERE post_repost = ?";
+            String query = "SELECT COUNT(*) as count FROM Repost WHERE fk_post_repost = ?";
             PreparedStatement ps = BDConnector.getInstance().prepareStatement(query);
             ps.setInt(1, postId);
             ResultSet rs = ps.executeQuery();

@@ -20,7 +20,6 @@ public class UsuarioController {
         return "login";
     }
 
-    // todo, modificación en comprobarLogin()
     @PostMapping("/login")
     String loginUsuario(@RequestParam String nombreUsuario, @RequestParam String password, Model model) {
         if (DAOFactory.getInstance().getDaoUsuario().comprobarLogin(nombreUsuario, password)) {
@@ -65,5 +64,4 @@ public class UsuarioController {
 
         return "perfil_usuario";
     }
-
 }

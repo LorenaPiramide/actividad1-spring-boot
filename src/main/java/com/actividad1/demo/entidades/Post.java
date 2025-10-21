@@ -3,7 +3,7 @@ package com.actividad1.demo.entidades;
 import java.time.LocalDateTime;
 
 public class Post {
-    private int id; // Antes estaba = -1, pero ahora está en bd
+    private int id;
     private String texto;
     private String usuario;
     private LocalDateTime fecha;

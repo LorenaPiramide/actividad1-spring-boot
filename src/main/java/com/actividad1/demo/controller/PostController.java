@@ -25,7 +25,7 @@ public class PostController {
 
     // Post → Creación de datos, formularios, etc. Se le puede pasar un body
     @PostMapping("/post/crear")
-    String guardaPost(@RequestParam String nombreUsuario, @RequestParam String texto, Model model) { // Antes estaba Model model como 2o parámetro
+    String guardaPost(@RequestParam String nombreUsuario, @RequestParam String texto, Model model) {
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
         if (usuarioActual == null) {
             return "redirect:/login";
@@ -33,9 +33,9 @@ public class PostController {
         DAOFactory.getInstance().getDaoPost().addPost(texto, usuarioActual.getNombreUsuario());
 
 //        todo, no sé si funciona
-//        model.addAttribute("usuarioActual", usuarioActual);
-//        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);
-//        model.addAttribute("posts", posts);
+        model.addAttribute("usuarioActual", usuarioActual);
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPostPorUsuario(usuarioActual);
+        model.addAttribute("posts", posts);
 
         return "perfil_usuario";
     }
@@ -54,19 +54,6 @@ public class PostController {
 
     @PostMapping("/repost")
     String repostear(@RequestParam String nombreUsuario, @RequestParam int postId, Model model) {
-//        Post postOriginal = null;
-//
-//        for (Post post : DAOFactory.getInstance().getDaoPost().getPosts()) {
-//            if (post.getId() == postId) {
-//                postOriginal = post;
-//                break;
-//            }
-//        }
-//
-//        if (postOriginal == null) {
-//            return "redirect:/inicio";
-//        }
-
         Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
 
         if (!DAOFactory.getInstance().getDaoPost().usuarioReposteado(nombreUsuario, postId)) {
@@ -78,7 +65,6 @@ public class PostController {
         List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
         model.addAttribute("posts", posts);
 
-//        return "redirect:/inicio";
         return "inicio";
     }
 
@@ -94,29 +80,11 @@ public class PostController {
         }
 
         //todo, esto hace falta??
-//        model.addAttribute("usuarioActual", usuarioActual);
+        model.addAttribute("usuarioActual", usuarioActual);
         //todo no sé si esto hace falta...
-//        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
-//        model.addAttribute("posts", posts);
+        List<Post> posts = DAOFactory.getInstance().getDaoPost().getPosts();
+        model.addAttribute("posts", posts);
 
-//        Post post = null;
-//        for (Post p : DAOFactory.getInstance().getDaoPost().getPosts()) {
-//            if (p.getId() == postId) {
-//                post = p;
-//                break;
-//            }
-//        }
-//
-//        if (post == null) {
-//            return "redirect:/inicio";
-//        }
-//
-//        Usuario usuarioActual = DAOFactory.getInstance().getDaoUsuario().obtenerUsuarioPorNombre(nombreUsuario);
-
-
-        //post.addLike(usuarioActual.getNombreUsuario());
-
-//        return "redirect:/inicio";
         return "inicio";
     }
 
